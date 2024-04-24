@@ -1,0 +1,73 @@
+﻿@{
+    ViewData["Title"] = "BuscadorSerie";
+    List<string> series = ViewData["SERIES"] as List<string>;
+}
+
+<h1>BuscadorSerie</h1>
+<p>
+    <a asp-action="Index">Back to Index</a>
+</p>
+<form method="post">
+    <label class="form-label">Serie</label>
+    <select class="form-select" name="serie">
+    </select>
+    <button id="buttonserie" type="button" class="btn btn-info mt-3">
+        Buscar personajes
+    </button>
+</form>
+
+<table id="tablepersonajes" class="table-borderless table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Imagen</th>
+            <th>Serie</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+    </tbody>
+</table>
+
+@section Scripts {
+    <script>
+        $(function () {
+            let urlApi = "https://apipersonajesseries2024alejo.azurewebsites.net/";
+            let request = "api/Personajes/Series";
+
+            $.ajax({
+                url: urlApi + request,
+                method: "GET",
+                success: function (data) {
+                    let html = "";
+                    $.each(data, function (index, serie) {
+                        html += "<option value='" + serie + "'>" + serie + "</option>";
+                    });
+                    $("select").html(html);
+                }
+            });
+
+            $("#buttonserie").on("click", function () {
+                let serie = $("select").find(":selected").val();
+                let request = "api/Personajes/PersonajesSeries/" + serie;
+                $.ajax({
+                    url: urlApi + request,
+                    method: "GET",
+                    success: function (data) {
+                        let html = "";
+                        $.each(data, function (index, personaje) {
+                            html += "<tr>";
+                            html += "<td>" + personaje.idPersonaje + "</td>";
+                            html += "<td>" + personaje.nombre + "</td>";
+                            html += "<td><img width='200' height='200' src='" + personaje.imagen + "' /></td>";
+                            html += "<td>" + personaje.serie + "</td>";
+                            html += "</tr>";
+                        });
+                        $("#tablepersonajes tbody").html(html);
+                    }
+                });
+            });
+        });
+    </script>
+}

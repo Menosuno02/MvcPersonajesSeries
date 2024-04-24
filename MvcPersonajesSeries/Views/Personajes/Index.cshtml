@@ -1,0 +1,56 @@
+﻿@model IEnumerable<MvcPersonajesSeries.Models.Personaje>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create"
+       class="btn btn-success mt-3">
+        Crear Personaje
+    </a>
+    <a asp-action="BuscadorSerie"
+       class="btn btn-info mt-3">
+        Buscar por Serie
+    </a>
+</p>
+<table class="table-borderless table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Imagen</th>
+            <th>Serie</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.IdPersonaje</td>
+                <td>@item.Nombre</td>
+                <td>
+                    <img width="200" height="200" src="@item.Imagen" />
+                </td>
+                <td>@item.Serie</td>
+                <td>
+                    <a asp-controller="Personajes"
+                       asp-action="Update"
+                       asp-route-idpersonaje="@item.IdPersonaje"
+                       class="btn btn-warning btn-sm">
+                        Update
+                    </a>
+                    <a asp-controller="Personajes"
+                       asp-action="Delete"
+                       asp-route-idpersonaje="@item.IdPersonaje"
+                       class="btn btn-danger btn-sm">
+                        Delete
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
